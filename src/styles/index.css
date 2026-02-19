@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #F5F1E8;
+  --warm-sand: #EDE7DC;
+  --taupe: #D4C4B0;
+  --charcoal: #2C2C2C;
+  --accent: #C4A57B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--charcoal);
+  font-family: 'Montserrat', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+}
