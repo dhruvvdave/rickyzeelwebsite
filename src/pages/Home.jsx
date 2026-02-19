@@ -39,30 +39,19 @@ export default function Home() {
       {/* Welcome */}
       <section className="max-w-6xl mx-auto px-4 py-16 md:py-24">
         <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="aspect-[2/3] bg-gradient-to-br from-sand to-taupe rounded-2xl flex items-center justify-center text-charcoal/40 font-sans text-sm">
+            Portrait photo coming soon
+          </div>
           <div>
             <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6">Welcome,</h2>
             <p className="font-sans text-charcoal/80 leading-relaxed mb-4">
               We're so excited to share this moment with you. Thank you for being part of our story —
               it wouldn't be the same without the people we love most.
             </p>
-            <p className="font-sans text-charcoal/80 leading-relaxed mb-8">
+            <p className="font-sans text-charcoal/80 leading-relaxed">
               Join us as we celebrate our marriage on August 17th! This website has everything you'll
               need: the schedule, venue details, travel tips, and RSVP.
             </p>
-            <div className="flex flex-wrap gap-3">
-              {NAV_BUTTONS.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  className="font-sans font-medium text-sm border border-accent text-accent px-5 py-2 rounded-lg hover:bg-accent hover:text-white transition-colors"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="aspect-[2/3] bg-gradient-to-br from-sand to-taupe rounded-2xl flex items-center justify-center text-charcoal/40 font-sans text-sm">
-            Portrait photo coming soon
           </div>
         </div>
       </section>
@@ -74,6 +63,23 @@ export default function Home() {
             Moments we'll always remember
           </h2>
           <ImageGallery />
+        </div>
+      </section>
+
+      {/* Navigation Buttons */}
+      <section className="py-16">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {NAV_BUTTONS.map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                className="font-sans font-medium text-sm border border-accent text-accent px-5 py-4 rounded-xl text-center hover:bg-accent hover:text-white transition-colors"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </div>
