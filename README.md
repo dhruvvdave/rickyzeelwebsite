@@ -10,7 +10,38 @@ A modern, elegant wedding website built with React 18 + Vite.
 - **Framer Motion** for animations
 - **Google Fonts**: Montserrat + Libre Caslon Display
 
-## Getting Started
+## Deployment
+
+This site is automatically deployed to GitHub Pages via GitHub Actions.
+
+### Live Site
+🌐 **https://dhruvvdave.github.io/rickyzeelwebsite/**
+
+### How it Works
+- Every push to `main` triggers automatic deployment
+- GitHub Actions builds the React app
+- Built files are deployed to the `gh-pages` branch
+- GitHub Pages serves the site
+
+### First-Time Setup (Already Done)
+1. Repository Settings → Pages
+2. Source: "Deploy from a branch"
+3. Branch: `gh-pages` / `root`
+4. Save
+
+### Manual Deployment
+You can also trigger deployment manually:
+- Go to Actions tab
+- Select "Deploy to GitHub Pages" workflow
+- Click "Run workflow"
+
+### Custom Domain (Optional)
+To use a custom domain:
+1. Add a `CNAME` file to the `public` folder with your domain
+2. Configure DNS settings at your domain provider
+3. Enable "Enforce HTTPS" in repository settings
+
+
 
 ```bash
 npm install
