@@ -1,0 +1,38 @@
+export const EVENTS = [
+  {
+    key: 'mehndi',
+    name: 'Mehndi',
+    date: 'August 15, 2026',
+    time: 'Evening',
+    location: '42 Lisson Crescent',
+    description: 'Traditional henna ceremony',
+    dressCode: 'Colorful Indian attire',
+  },
+  {
+    key: 'pithi',
+    name: 'Pithi & Grah Shanti',
+    date: 'August 16, 2026',
+    time: 'Time TBD',
+    location: 'Location TBD',
+    description: 'Turmeric ceremony and prayers',
+    dressCode: 'Traditional Indian attire',
+  },
+  {
+    key: 'sangeet',
+    name: 'Sangeet',
+    date: 'August 16, 2026',
+    time: '6:30 PM onwards',
+    location: 'Chandni Gateway',
+    description: 'Music, dance, and celebration',
+    dressCode: 'Festive Indian attire',
+  },
+  {
+    key: 'wedding',
+    name: 'Wedding Ceremony',
+    date: 'August 17, 2026',
+    time: '3:30 PM onwards',
+    location: 'Terrace on the Green',
+    description: 'Join us as we tie the knot!',
+    dressCode: 'Formal Indian attire',
+  },
+]
