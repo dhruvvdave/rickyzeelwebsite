@@ -6,110 +6,73 @@
     <title>Ricky & Zeel | Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Montserrat:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-page="home">
-    <div id="login-overlay" class="login-overlay hidden">
-      <div class="login-card">
-        <h1>Ricky &amp; Zeel</h1>
-        <p class="login-subtitle">August 17, 2026 • Toronto</p>
-        <p>
-          Enter your email address or phone number from your invitation to view
-          your personalized events.
-        </p>
-        <div class="login-form">
-          <input id="invite-input" type="text" placeholder="Email or phone" />
-          <button id="invite-submit">Continue</button>
-        </div>
-        <p id="invite-error" class="invite-error" aria-live="polite"></p>
+    <header class="site-header">
+      <div>
+        <div class="brand">Ricky & Zeel</div>
+        <p class="brand-meta" data-family-greeting>August 17, 2026 • Toronto</p>
       </div>
-    </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav id="site-nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="story.html">Our Story</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="travel.html">Travel</a>
+        <a href="rsvp.html">RSVP</a>
+        <a href="faq.html">FAQs</a>
+        <button id="logout-btn" class="link-btn hidden">Log out</button>
+      </nav>
+    </header>
 
-    <div class="page-shell">
-      <header class="site-header">
-        <div class="top-brand">
-          <div class="brand-script">Ricky &amp; Zeel</div>
-          <div class="brand-meta" data-family-greeting>August 17, 2026 • Toronto</div>
+    <main>
+      <section class="hero">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=80" alt="Ricky and Zeel portrait" />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Ricky & Zeel</p>
+          <h1>We're Getting Married</h1>
         </div>
-        <button class="mobile-menu" id="mobile-menu" aria-label="Open menu">☰</button>
-        <nav id="site-nav">
-          <a href="index.html" class="active">Home</a>
-          <a href="story.html">Our Story</a>
-          <a href="schedule.html">Schedule</a>
-          <a href="travel.html">Travel</a>
-          <a href="rsvp.html">RSVP</a>
-          <a href="faq.html">FAQs</a>
-          <button id="logout-btn" class="ghost-btn hidden">Log out</button>
-        </nav>
-      </header>
+      </section>
 
-      <main>
-        <section class="hero">
-          <img
-            src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=2200&q=80"
-            alt="Couple standing together"
-          />
-          <div class="hero-title-band">
-            <p>Ricky &amp; Zeel</p>
-            <h1>We're Getting Married</h1>
+      <section class="intro center">
+        <div class="logo-placeholder">RZ</div>
+        <h2>Come for the vows. Stay for the food, dancing, and chaos (the good kind).</h2>
+      </section>
+
+      <section class="welcome split">
+        <div class="welcome-text">
+          <h3>Welcome,</h3>
+          <p>We're so excited to share this moment with you. Thank you for being part of our story — it wouldn't be the same without the people we love most.</p>
+          <p>Join us as we celebrate our marriage on August 17th! This website has everything you'll need: the schedule, venue details, travel tips, and RSVP.</p>
+          <div class="cta-row">
+            <a href="story.html" class="btn">Our Story</a>
+            <a href="schedule.html" class="btn">See the Schedule</a>
+            <a href="travel.html" class="btn">Travel Tips</a>
+            <a href="rsvp.html" class="btn">RSVP</a>
+            <a href="faq.html" class="btn">FAQs</a>
           </div>
-        </section>
+        </div>
+        <div class="welcome-image">
+          <img src="https://images.unsplash.com/photo-1525258946800-98cfd641d0de?auto=format&fit=crop&w=900&q=80" alt="Vertical couple portrait" />
+        </div>
+      </section>
 
-        <section class="intro-block">
-          <div class="logo-seal">RZ</div>
-          <h2>
-            Come for the vows. Stay for the food, dancing, and chaos (the good kind)
-          </h2>
-        </section>
+      <section class="gallery-strip">
+        <h3>Moments we'll always remember</h3>
+        <div class="gallery-track" id="gallery-track">
+          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Gallery 1" />
+          <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Gallery 2" />
+          <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=800&q=80" alt="Gallery 3" />
+          <img src="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=800&q=80" alt="Gallery 4" />
+          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80" alt="Gallery 5" />
+        </div>
+      </section>
+    </main>
 
-        <section class="welcome-grid">
-          <div class="welcome-photo">
-            <img
-              src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80"
-              alt="Vertical portrait"
-            />
-          </div>
-          <div class="welcome-copy">
-            <h3>Welcome,</h3>
-            <p>
-              We're so excited to share this moment with you. Thank you for being
-              part of our story — it wouldn't be the same without the people we
-              love most.
-            </p>
-            <p>
-              Join us as we celebrate our marriage on August 17th! This website
-              has everything you'll need: the schedule, venue details, travel tips,
-              and RSVP.
-            </p>
-            <div class="cta-links">
-              <a href="story.html">Our Story</a>
-              <a href="schedule.html">See the Schedule</a>
-              <a href="travel.html">Travel Tips</a>
-              <a href="rsvp.html">RSVP</a>
-              <a href="faq.html">FAQs</a>
-            </div>
-          </div>
-        </section>
-
-        <section class="gallery-section">
-          <h3>Moments we'll always remember</h3>
-          <div class="gallery-track" id="gallery-track">
-            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=80" alt="Gallery image 1" />
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="Gallery image 2" />
-            <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=900&q=80" alt="Gallery image 3" />
-            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=900&q=80" alt="Gallery image 4" />
-            <img src="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=900&q=80" alt="Gallery image 5" />
-          </div>
-        </section>
-      </main>
-
-      <footer>With love, Ricky &amp; Zeel</footer>
-    </div>
-
+    <footer><p>With love, Ricky & Zeel</p></footer>
     <script src="script.js"></script>
   </body>
 </html>

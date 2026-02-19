@@ -1,202 +1,149 @@
-const ACCESS_KEY = "rz_guest_profile";
-const RSVP_KEY = "rz_rsvp_answers";
-
-const guestDirectory = {
-  "patelfamily@example.com": {
-    familyName: "Patel Family",
-    events: ["mehndi", "pithi", "sangeet", "wedding"],
-  },
-  "shahfamily@example.com": {
-    familyName: "Shah Family",
-    events: ["sangeet", "wedding"],
-  },
-  "4165550123": {
-    familyName: "Joshi Family",
-    events: ["wedding"],
-  },
+const EVENTS = {
+  mehndi: { name: "Schedule of Mehndi", date: "August 15 • Evening", venue: "42 Lisson Crescent", notes: "Detailed timing coming shortly." },
+  pithi: { name: "Schedule of Pithi & Grah Shanti", date: "August 16 • Daytime", venue: "Venue details to be finalized", notes: "Detailed timing coming shortly." },
+  sangeet: { name: "Schedule of Sangeet", date: "August 16 • 6:30 PM", venue: "Chandni Gateway", notes: "Detailed timing coming shortly." },
+  wedding: { name: "Schedule of Wedding", date: "August 17 • 3:30 PM onwards", venue: "Terrace on the Green", notes: "Detailed timing coming shortly." },
 };
 
-const eventDetails = {
-  mehndi: {
-    title: "Schedule of Mehndi",
-    date: "August 15 • Evening",
-    venue: "42 Lisson Crescent",
-    note: "Detailed schedule to be shared shortly.",
-  },
-  pithi: {
-    title: "Schedule of Pithi & Grah Shanti",
-    date: "August 16 • Daytime",
-    venue: "Details coming soon",
-    note: "Detailed schedule to be shared shortly.",
-  },
-  sangeet: {
-    title: "Schedule of Sangeet",
-    date: "August 16 • 6:30 PM onwards",
-    venue: "Chandni Gateway",
-    note: "Detailed schedule to be shared shortly.",
-  },
-  wedding: {
-    title: "Schedule of Wedding",
-    date: "August 17 • 3:30 PM onwards",
-    venue: "Terrace on the Green",
-    note: "Detailed schedule to be shared shortly.",
-  },
+const GUESTS = {
+  "patelfamily@example.com": { family: "Patel Family", events: ["mehndi", "pithi", "sangeet", "wedding"], guests: ["Ravi Patel", "Neha Patel"] },
+  "shahfamily@example.com": { family: "Shah Family", events: ["sangeet", "wedding"], guests: ["Aman Shah", "Isha Shah"] },
+  "4165550123": { family: "Joshi Family", events: ["wedding"], guests: ["Vikram Joshi"] },
 };
 
-const normalizeIdentifier = (raw) => {
-  const value = raw.trim().toLowerCase();
-  if (/^[\d\s()+-]+$/.test(value)) return value.replace(/\D/g, "");
-  return value;
+const RSVP_KEY = "rz_rsvp";
+const ACCESS_KEY = "rz_guest";
+
+const normalizeIdentifier = (value) => {
+  const cleaned = value.trim().toLowerCase();
+  if (/^[\d\s()+-]+$/.test(cleaned)) return cleaned.replace(/\D/g, "");
+  return cleaned;
 };
 
-const getGuestProfile = () => {
-  const stored = localStorage.getItem(ACCESS_KEY);
-  return stored ? JSON.parse(stored) : null;
+const getGuest = () => {
+  const raw = localStorage.getItem(ACCESS_KEY);
+  return raw ? JSON.parse(raw) : null;
 };
 
-const setGuestProfile = (profile) => {
+function saveGuest(profile) {
   localStorage.setItem(ACCESS_KEY, JSON.stringify(profile));
-};
-
-function setupMenu() {
-  const menuButton = document.getElementById("mobile-menu");
-  const nav = document.getElementById("site-nav");
-  if (!menuButton || !nav) return;
-  menuButton.addEventListener("click", () => nav.classList.toggle("open"));
 }
 
-function setupLogout() {
-  const btn = document.getElementById("logout-btn");
-  if (!btn) return;
-  const hasProfile = Boolean(getGuestProfile());
-  btn.classList.toggle("hidden", !hasProfile);
-  btn.addEventListener("click", () => {
-    localStorage.removeItem(ACCESS_KEY);
-    window.location.href = "index.html";
-  });
-}
-
-function updateHeaderGreeting() {
-  const greeting = document.querySelector("[data-family-greeting]");
-  const profile = getGuestProfile();
-  if (!greeting || !profile) return;
-  greeting.textContent = `Celebrating with the ${profile.familyName}`;
-}
-
-function setupLoginOverlay() {
-  const overlay = document.getElementById("login-overlay");
-  if (!overlay) return;
-
-  if (getGuestProfile()) {
-    overlay.classList.add("hidden");
-    return;
+function setGreeting() {
+  const guest = getGuest();
+  const el = document.querySelector("[data-family-greeting]");
+  if (el && guest?.family) el.textContent = `Celebrating with the ${guest.family}`;
+  const logout = document.getElementById("logout-btn");
+  if (logout) {
+    logout.classList.toggle("hidden", !guest);
+    logout.onclick = () => {
+      localStorage.removeItem(ACCESS_KEY);
+      window.location.href = "index.html";
+    };
   }
+}
 
-  overlay.classList.remove("hidden");
+function ensureGate() {
+  if (getGuest()) return;
+  const overlay = document.createElement("div");
+  overlay.className = "gate";
+  overlay.innerHTML = `<div class="gate-card"><h2>Welcome to Ricky & Zeel's Wedding</h2><p>Enter your email or phone from your invitation to view your personalized website details.</p><input id="gate-input" placeholder="Email or phone number" /><button id="gate-btn">Continue</button><p id="gate-error" class="error"></p></div>`;
+  document.body.appendChild(overlay);
 
-  const input = document.getElementById("invite-input");
-  const button = document.getElementById("invite-submit");
-  const error = document.getElementById("invite-error");
-
-  const attemptLogin = () => {
-    const normalized = normalizeIdentifier(input.value || "");
-    const profile = guestDirectory[normalized];
-
+  const input = document.getElementById("gate-input");
+  const error = document.getElementById("gate-error");
+  const submit = () => {
+    const key = normalizeIdentifier(input.value || "");
+    const profile = GUESTS[key];
     if (!profile) {
       error.textContent = "We couldn't find that invitation. Please try again.";
       return;
     }
-
-    setGuestProfile(profile);
-    overlay.classList.add("hidden");
-    updateHeaderGreeting();
-    setupLogout();
-    renderTimeline();
+    saveGuest(profile);
+    overlay.remove();
+    setGreeting();
+    renderSchedule();
     renderRsvp();
   };
-
-  button?.addEventListener("click", attemptLogin);
-  input?.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") attemptLogin();
-  });
+  document.getElementById("gate-btn").addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => e.key === "Enter" && submit());
 }
 
-function renderTimeline() {
-  const timeline = document.getElementById("timeline-list");
-  if (!timeline) return;
-
-  const profile = getGuestProfile();
-  if (!profile?.events?.length) {
-    timeline.innerHTML = `<article class="timeline-item"><h3>Please start from Home</h3><p class="timeline-meta">Log in on the Home page to view your invitation schedule.</p></article>`;
+function renderSchedule() {
+  const selector = document.getElementById("event-selector");
+  const detail = document.getElementById("event-detail");
+  if (!selector || !detail) return;
+  const guest = getGuest();
+  if (!guest?.events?.length) {
+    detail.innerHTML = "<p>Please log in from the home page.</p>";
     return;
   }
 
-  timeline.innerHTML = profile.events
-    .map((key) => {
-      const event = eventDetails[key];
-      if (!event) return "";
-      return `<article class="timeline-item"><h3>${event.title}</h3><p class="timeline-meta">${event.date}</p><p>${event.note}</p><p><strong>Venue:</strong> ${event.venue}</p></article>`;
-    })
-    .join("");
+  const showDetail = (key) => {
+    const ev = EVENTS[key];
+    detail.innerHTML = `<h3>${ev.name}</h3><p><strong>${ev.date}</strong></p><p>${ev.notes}</p><p><strong>Venue:</strong> ${ev.venue}</p>`;
+    selector.querySelectorAll(".event-picker").forEach((btn) => btn.classList.toggle("active", btn.dataset.key === key));
+  };
+
+  selector.innerHTML = guest.events.map((key) => `<button class="event-picker" data-key="${key}">${EVENTS[key].name}<br><small>${EVENTS[key].date}</small></button>`).join("");
+  selector.querySelectorAll(".event-picker").forEach((btn) => btn.addEventListener("click", () => showDetail(btn.dataset.key)));
+  showDetail(guest.events[0]);
 }
 
 function renderRsvp() {
-  const container = document.getElementById("rsvp-list");
+  const container = document.getElementById("rsvp-container");
   if (!container) return;
-
-  const profile = getGuestProfile();
-  if (!profile?.events?.length) {
-    container.innerHTML = `<article class="soft-card">Please log in from the Home page first.</article>`;
+  const guest = getGuest();
+  if (!guest) {
+    container.innerHTML = '<article class="card">Please log in from the home page first.</article>';
     return;
   }
 
-  const answers = JSON.parse(localStorage.getItem(RSVP_KEY) || "{}");
-
-  container.innerHTML = profile.events
-    .map((key) => {
-      const event = eventDetails[key];
-      const answer = answers[key] || "pending";
-      const label =
-        answer === "yes" ? "Attending" : answer === "no" ? "Not attending" : "No response";
-
-      return `<article class="rsvp-card"><div><h3>${event.title}</h3><p class="timeline-meta">${event.date}</p></div><div class="rsvp-actions"><button class="action-btn" data-event="${key}" data-answer="yes">Accept</button><button class="action-btn" data-event="${key}" data-answer="no">Decline</button><span class="status-pill">${label}</span></div></article>`;
+  const responses = JSON.parse(localStorage.getItem(RSVP_KEY) || "{}");
+  container.innerHTML = guest.events
+    .map((eventKey) => {
+      const state = responses[eventKey] || "pending";
+      const klass = state === "yes" ? "y" : state === "no" ? "n" : "";
+      return `<article class="rsvp-row"><div><strong>${EVENTS[eventKey].name}</strong><p>${EVENTS[eventKey].date}</p></div><div><button class="btn" data-rsvp="yes" data-event="${eventKey}">Accept</button> <button class="btn" data-rsvp="no" data-event="${eventKey}">Decline</button> <span class="pill ${klass}">${state === "pending" ? "No response" : state === "yes" ? "Attending" : "Not attending"}</span></div></article>`;
     })
     .join("");
 
-  container.querySelectorAll(".action-btn").forEach((btn) => {
+  container.querySelectorAll("button[data-rsvp]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      answers[btn.dataset.event] = btn.dataset.answer;
-      localStorage.setItem(RSVP_KEY, JSON.stringify(answers));
+      responses[btn.dataset.event] = btn.dataset.rsvp;
+      localStorage.setItem(RSVP_KEY, JSON.stringify(responses));
       renderRsvp();
     });
   });
 }
 
-function setupFaqAccordion() {
-  document.querySelectorAll(".faq-question").forEach((button) => {
-    button.addEventListener("click", () => {
-      button.closest(".faq-item")?.classList.toggle("open");
-    });
+function setupFaq() {
+  document.querySelectorAll(".faq-q").forEach((btn) => {
+    btn.addEventListener("click", () => btn.closest(".faq-item")?.classList.toggle("open"));
   });
 }
 
-function setupGalleryAutoscroll() {
+function setupGallery() {
   const track = document.getElementById("gallery-track");
   if (!track) return;
-
-  const slides = Array.from(track.querySelectorAll("img"));
-  let index = 0;
+  const slides = [...track.querySelectorAll("img")];
+  let i = 0;
   setInterval(() => {
-    index = (index + 1) % slides.length;
-    slides[index].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-  }, 3200);
+    i = (i + 1) % slides.length;
+    slides[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, 2800);
 }
 
-setupMenu();
-setupLogout();
-updateHeaderGreeting();
-setupLoginOverlay();
-renderTimeline();
+function setupNav() {
+  const toggle = document.getElementById("nav-toggle");
+  const nav = document.getElementById("site-nav");
+  if (toggle && nav) toggle.addEventListener("click", () => nav.classList.toggle("open"));
+}
+
+setupNav();
+setGreeting();
+ensureGate();
+renderSchedule();
 renderRsvp();
-setupFaqAccordion();
-setupGalleryAutoscroll();
+setupFaq();
+setupGallery();
