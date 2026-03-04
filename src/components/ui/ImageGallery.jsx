@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const PLACEHOLDERS = [
-  { id: 1, gradient: 'from-rose-200 to-pink-300', label: 'Photo 1' },
-  { id: 2, gradient: 'from-amber-200 to-yellow-300', label: 'Photo 2' },
-  { id: 3, gradient: 'from-teal-200 to-cyan-300', label: 'Photo 3' },
-  { id: 4, gradient: 'from-purple-200 to-violet-300', label: 'Photo 4' },
-  { id: 5, gradient: 'from-green-200 to-emerald-300', label: 'Photo 5' },
-  { id: 6, gradient: 'from-orange-200 to-amber-300', label: 'Photo 6' },
+  { id: 1, gradient: 'from-stone-200 to-stone-400', label: 'Photo 1' },
+  { id: 2, gradient: 'from-amber-100 to-amber-300', label: 'Photo 2' },
+  { id: 3, gradient: 'from-rose-100 to-rose-300', label: 'Photo 3' },
+  { id: 4, gradient: 'from-stone-300 to-amber-200', label: 'Photo 4' },
+  { id: 5, gradient: 'from-amber-200 to-stone-300', label: 'Photo 5' },
+  { id: 6, gradient: 'from-rose-200 to-stone-200', label: 'Photo 6' },
 ]
 
 export default function ImageGallery() {
@@ -18,7 +18,7 @@ export default function ImageGallery() {
     if (paused) return
     const timer = setInterval(() => {
       setActive(a => (a + 1) % PLACEHOLDERS.length)
-    }, 3000)
+    }, 3500)
     return () => clearInterval(timer)
   }, [paused])
 
@@ -27,30 +27,63 @@ export default function ImageGallery() {
     setPaused(true)
   }
 
+  function prev() {
+    handleSelect((active - 1 + PLACEHOLDERS.length) % PLACEHOLDERS.length)
+  }
+
+  function next() {
+    handleSelect((active + 1) % PLACEHOLDERS.length)
+  }
+
   return (
-    <div className="relative overflow-hidden rounded-2xl">
-      <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth">
+    <div className="relative">
+      {/* Cards row */}
+      <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth justify-center">
         {PLACEHOLDERS.map((ph, i) => (
           <motion.div
             key={ph.id}
-            animate={{ opacity: i === active ? 1 : 0.6, scale: i === active ? 1.02 : 1 }}
+            animate={{
+              opacity: i === active ? 1 : 0.7,
+              scale: i === active ? 1.04 : 1,
+            }}
             transition={{ duration: 0.4 }}
-            className={`flex-none w-64 h-48 rounded-xl bg-gradient-to-br ${ph.gradient} flex items-center justify-center text-white/80 font-sans font-medium snap-start cursor-pointer`}
+            className={`flex-none w-72 h-96 md:w-80 md:h-[28rem] rounded-none bg-gradient-to-b ${ph.gradient} flex items-end justify-center pb-6 cursor-pointer snap-start`}
             onClick={() => handleSelect(i)}
           >
-            {ph.label}
+            <span className="font-sans text-xs tracking-widest uppercase text-charcoal/40">{ph.label}</span>
           </motion.div>
         ))}
       </div>
-      <div className="flex justify-center gap-2 mt-4">
-        {PLACEHOLDERS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => handleSelect(i)}
-            aria-label={`Go to photo ${i + 1}`}
-            className={`w-2 h-2 rounded-full transition-colors ${i === active ? 'bg-accent' : 'bg-taupe'}`}
-          />
-        ))}
+
+      {/* Arrow navigation */}
+      <div className="flex items-center justify-center gap-8 mt-6">
+        <button
+          onClick={prev}
+          aria-label="Previous photo"
+          className="font-serif text-2xl text-charcoal/50 hover:text-charcoal transition-colors w-8 text-center"
+        >
+          &#8249;
+        </button>
+
+        {/* Dot indicators */}
+        <div className="flex gap-2">
+          {PLACEHOLDERS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handleSelect(i)}
+              aria-label={`Go to photo ${i + 1}`}
+              className={`transition-all duration-300 rounded-none ${i === active ? 'w-6 h-1.5 bg-charcoal' : 'w-1.5 h-1.5 bg-taupe'}`}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={next}
+          aria-label="Next photo"
+          className="font-serif text-2xl text-charcoal/50 hover:text-charcoal transition-colors w-8 text-center"
+        >
+          &#8250;
+        </button>
       </div>
     </div>
   )

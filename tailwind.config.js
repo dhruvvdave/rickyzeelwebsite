@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'system-ui', 'sans-serif'],
-        serif: ['Libre Caslon Display', 'Georgia', 'serif'],
+        sans: ['Futura PT', 'Montserrat', 'system-ui', 'sans-serif'],
+        serif: ['Libre Caslon Display', 'Cormorant Garamond', 'Georgia', 'serif'],
       },
       colors: {
         cream: '#F5F1E8',
