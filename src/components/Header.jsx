@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { to: '/schedule', label: 'Schedule' },
   { to: '/travel', label: 'Travel' },
   { to: '/faq', label: 'FAQ' },
-  { to: '/rsvp', label: 'RSVP' },
+  { to: '/rsvp', label: 'RSVP' }
 ]
 
 export default function Header() {
@@ -16,21 +16,22 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-40 bg-cream/95 backdrop-blur border-b border-taupe/60">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="font-serif text-lg tracking-widest text-charcoal hover:text-accent transition-colors">
-          Ricky & Zeel
+    <header style={{ backgroundColor: 'rgba(247,243,238,0.96)', backdropFilter: 'blur(8px)', borderBottom: '1px solid var(--taupe)' }} className="sticky top-0 z-40">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <Link to="/" className="font-display text-xl tracking-elegant" style={{ color: 'var(--charcoal)' }}>
+          Ricky &amp; Zeel
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7" aria-label="Main navigation">
+        <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               className={({ isActive }) =>
-                `font-sans text-xs tracking-widest uppercase transition-colors ${isActive ? 'text-accent' : 'text-charcoal hover:text-accent'}`
+                `nav-link text-xs font-medium uppercase tracking-widest transition-colors ${isActive ? 'active' : ''}`
               }
+              style={{ color: 'var(--charcoal)' }}
             >
               {label}
             </NavLink>
@@ -38,7 +39,8 @@ export default function Header() {
           {isAuthenticated && (
             <button
               onClick={logout}
-              className="font-sans text-xs tracking-widest uppercase text-charcoal hover:text-accent transition-colors"
+              className="nav-link text-xs font-medium uppercase tracking-widest transition-colors"
+              style={{ color: 'var(--charcoal)' }}
             >
               Log out
             </button>
@@ -47,8 +49,9 @@ export default function Header() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden text-charcoal p-2"
+          className="md:hidden p-2"
           aria-label="Toggle menu"
+          style={{ color: 'var(--charcoal)' }}
           onClick={() => setMenuOpen(o => !o)}
         >
           {menuOpen ? '✕' : '☰'}
@@ -57,15 +60,20 @@ export default function Header() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav className="md:hidden bg-cream border-t border-taupe/60 px-4 py-4 flex flex-col gap-4" aria-label="Mobile navigation">
+        <nav
+          className="md:hidden border-t px-6 py-4 flex flex-col gap-4"
+          style={{ backgroundColor: 'var(--cream)', borderColor: 'var(--taupe)' }}
+          aria-label="Mobile navigation"
+        >
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `font-sans text-xs tracking-widest uppercase py-1 transition-colors ${isActive ? 'text-accent' : 'text-charcoal'}`
+                `text-xs font-medium uppercase tracking-widest py-1 transition-colors ${isActive ? 'active' : ''}`
               }
+              style={{ color: 'var(--charcoal)' }}
             >
               {label}
             </NavLink>
@@ -73,7 +81,8 @@ export default function Header() {
           {isAuthenticated && (
             <button
               onClick={() => { logout(); setMenuOpen(false) }}
-              className="font-sans text-xs tracking-widest uppercase text-charcoal text-left py-1"
+              className="text-xs font-medium uppercase tracking-widest text-left py-1"
+              style={{ color: 'var(--charcoal)' }}
             >
               Log out
             </button>
