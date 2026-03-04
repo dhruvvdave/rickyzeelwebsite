@@ -11,7 +11,7 @@ import RSVP from './pages/RSVP.jsx'
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--cream)' }}>
       <Header />
       <main className="flex-1">
         <Routes>
