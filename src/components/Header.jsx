@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { useGuest } from '../context/GuestContext.jsx'
 
 const NAV_LINKS = [
   { to: '/our-story', label: 'Our Story' },
@@ -11,7 +10,6 @@ const NAV_LINKS = [
 ]
 
 export default function Header() {
-  const { isAuthenticated, logout } = useGuest()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -46,14 +44,6 @@ export default function Header() {
               {label}
             </NavLink>
           ))}
-          {isAuthenticated && (
-            <button
-              onClick={logout}
-              className="navbar-link"
-            >
-              Log out
-            </button>
-          )}
         </nav>
 
         {/* Mobile hamburger */}
@@ -83,15 +73,6 @@ export default function Header() {
               {label}
             </NavLink>
           ))}
-          {isAuthenticated && (
-            <button
-              onClick={() => { logout(); setMenuOpen(false) }}
-              className="text-xs font-medium uppercase tracking-widest text-left py-1"
-              style={{ color: 'var(--charcoal)' }}
-            >
-              Log out
-            </button>
-          )}
         </nav>
       )}
     </header>

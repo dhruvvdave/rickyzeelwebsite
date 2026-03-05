@@ -1,20 +1,9 @@
 import { motion } from 'framer-motion'
-import { useGuest } from '../context/GuestContext.jsx'
 import { EVENTS } from '../utils/events.js'
 
 const EVENT_NUMBERS = ['01', '02', '03', '04']
 
 export default function Schedule() {
-  const { currentFamily } = useGuest()
-
-  const invitedKeys = currentFamily
-    ? [...new Set(currentFamily.guests.flatMap(g => g.events))]
-    : []
-
-  const visibleEvents = invitedKeys.length > 0
-    ? EVENTS.filter(e => invitedKeys.includes(e.key))
-    : EVENTS
-
   return (
     <div>
       <div className="page-hero">
@@ -23,27 +12,20 @@ export default function Schedule() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="eyebrow mb-3">August 15–17, 2025</p>
+          <p className="eyebrow mb-3">August 15–17, 2026</p>
           <h1>Schedule of Events</h1>
           <p>Everything happening across the weekend</p>
         </motion.div>
       </div>
 
       <div className="schedule-page">
-        {currentFamily && (
-          <p className="font-sans text-center text-xs tracking-widest uppercase mb-10" style={{ color: 'var(--color-text-light)' }}>
-            Welcome, {currentFamily.familyName}
-          </p>
-        )}
-
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          {visibleEvents.map((event, i) => {
-            const globalIndex = EVENTS.findIndex(e => e.key === event.key)
-            const num = EVENT_NUMBERS[globalIndex] ?? String(i + 1).padStart(2, '0')
+          {EVENTS.map((event, i) => {
+            const num = EVENT_NUMBERS[i] ?? String(i + 1).padStart(2, '0')
             return (
               <div key={event.key} className="event-card">
                 <p className="event-number">{num}</p>
@@ -61,6 +43,12 @@ export default function Schedule() {
                     <span className="event-meta-label">Venue</span>
                     <span className="event-meta-value">{event.location}</span>
                   </div>
+                  {event.address && (
+                    <div className="event-meta-item">
+                      <span className="event-meta-label">Address</span>
+                      <span className="event-meta-value">{event.address}</span>
+                    </div>
+                  )}
                   {event.dressCode && (
                     <div className="event-meta-item">
                       <span className="event-meta-label">Attire</span>
@@ -69,7 +57,7 @@ export default function Schedule() {
                   )}
                 </div>
                 <div className="event-placeholder">
-                  Schedule details coming soon
+                  Detailed schedule coming soon
                 </div>
               </div>
             )
