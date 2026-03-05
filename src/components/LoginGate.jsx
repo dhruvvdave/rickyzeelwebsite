@@ -42,18 +42,30 @@ export default function LoginGate() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-charcoal/80 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(44, 36, 22, 0.75)' }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-cream rounded-2xl shadow-2xl p-8 w-full max-w-md"
+        style={{
+          background: 'var(--color-warm-white)',
+          borderRadius: 4,
+          padding: '2.5rem',
+          width: '100%',
+          maxWidth: 420,
+          boxShadow: '0 16px 48px rgba(44,36,22,0.18)',
+        }}
       >
         <div className="text-center mb-8">
-          <h1 className="font-serif text-3xl text-charcoal mb-2">Ricky & Zeel</h1>
-          <p className="text-accent font-sans text-sm tracking-widest uppercase">August 17, 2026</p>
+          <p className="font-serif" style={{ fontSize: '1.8rem', color: 'var(--color-text)', fontStyle: 'italic', marginBottom: '0.35rem' }}>
+            Ricky &amp; Zeel
+          </p>
+          <p className="eyebrow">August 17, 2026</p>
         </div>
-        <p className="font-sans text-charcoal/80 text-sm text-center mb-6">
+        <p className="font-sans text-center mb-6" style={{ fontSize: '0.85rem', color: 'var(--color-text-light)', lineHeight: 1.7 }}>
           Please enter the email address or phone number you used when you received your invitation.
         </p>
         <form onSubmit={handleSubmit} noValidate>
@@ -63,18 +75,28 @@ export default function LoginGate() {
             onChange={e => setIdentifier(e.target.value)}
             placeholder="Email or phone number"
             aria-label="Email or phone number"
-            className="w-full border border-taupe rounded-lg px-4 py-3 font-sans text-charcoal bg-white focus:outline-none focus:ring-2 focus:ring-accent mb-4"
+            className="w-full font-sans mb-4"
+            style={{
+              border: '1px solid var(--color-taupe)',
+              borderRadius: 2,
+              padding: '0.75rem 1rem',
+              color: 'var(--color-text)',
+              background: 'white',
+              fontSize: '0.875rem',
+              outline: 'none',
+            }}
             disabled={loading}
           />
           {error && (
-            <p role="alert" className="text-red-600 text-sm font-sans mb-4">
+            <p role="alert" className="font-sans mb-4" style={{ color: '#b91c1c', fontSize: '0.8rem' }}>
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-accent text-white font-sans font-semibold py-3 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50"
+            className="btn-primary w-full"
+            style={{ opacity: loading ? 0.6 : 1, textAlign: 'center' }}
           >
             {loading ? 'Looking you up…' : 'Continue'}
           </button>
@@ -83,3 +105,4 @@ export default function LoginGate() {
     </div>
   )
 }
+

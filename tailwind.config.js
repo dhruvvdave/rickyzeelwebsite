@@ -7,15 +7,20 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Futura PT', 'Montserrat', 'system-ui', 'sans-serif'],
-        serif: ['Libre Caslon Display', 'Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['Montserrat', 'Avenir Next', 'system-ui', 'sans-serif'],
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
       },
       colors: {
-        cream: '#F5F1E8',
-        sand: '#EDE7DC',
-        taupe: '#D4C4B0',
-        charcoal: '#2C2C2C',
-        accent: '#C4A57B',
+        cream: '#f9f5f0',
+        'warm-white': '#fefcf9',
+        sand: '#e8ddd0',
+        beige: '#e8ddd0',
+        taupe: '#c4b5a5',
+        brown: '#8b7355',
+        dark: '#2c2416',
+        charcoal: '#3d3228',
+        accent: '#8b7355',
+        'text-light': '#7a6a58',
       },
     },
   },

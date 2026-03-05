@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import ImageGallery from '../components/ui/ImageGallery.jsx'
+
+const BASE = '/rickyzeelwebsite'
 
 const NAV_BUTTONS = [
   { to: '/our-story', label: 'Our Story' },
@@ -10,114 +12,126 @@ const NAV_BUTTONS = [
   { to: '/faq', label: 'FAQs' },
 ]
 
+const GALLERY_IMAGES = [1, 2, 3, 4, 5, 6]
+
+function CouplePhoto() {
+  const [imgError, setImgError] = useState(false)
+
+  if (imgError) {
+    return (
+      <div className="welcome-photo-placeholder">
+        <span className="font-sans text-xs tracking-widest uppercase" style={{ color: 'var(--color-taupe)' }}>
+          Photo coming soon
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <img
+      src={`${BASE}/photos/couple-vertical.jpg`}
+      alt="Ricky and Zeel"
+      className="welcome-photo"
+      onError={() => setImgError(true)}
+    />
+  )
+}
+
 export default function Home() {
+  // Duplicate images for seamless infinite scroll
+  const galleryItems = [...GALLERY_IMAGES, ...GALLERY_IMAGES]
+
   return (
     <div>
-      {/* Hero */}
-      <section
-        className="relative h-screen min-h-[500px] flex flex-col items-center justify-center"
-        style={{ background: 'linear-gradient(to bottom, #e8e0d5 0%, #d4c4b0 100%)' }}
-      >
-        {/* Horizontal band overlay */}
-        <div className="w-full bg-white/20 backdrop-blur-sm py-16 px-4 flex flex-col items-center text-center">
-          {/* Monogram */}
-          <div className="w-12 h-12 rounded-full border border-white/60 flex items-center justify-center font-serif text-sm text-white/90 mb-8">
-            R & Z
-          </div>
-
+      {/* ── Hero ─────────────────────────────── */}
+      <section className="hero-section">
+        <div className="hero-overlay" />
+        <div className="hero-content">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.9 }}
+            className="flex flex-col items-center"
           >
-            <h1 className="font-serif text-6xl md:text-8xl text-white tracking-wide">
-              Ricky & Zeel
-            </h1>
-            <p className="font-sans text-base md:text-lg text-white/80 tracking-[0.3em] uppercase mt-2">
-              We're Getting Married
+            <div className="hero-logo-placeholder">R &amp; Z</div>
+
+            <h1 className="hero-title">Ricky &amp; Zeel</h1>
+            <p className="hero-subtitle">We&apos;re Getting Married</p>
+
+            <div className="hero-divider" />
+
+            <p className="hero-tagline">
+              Come for the vows. Stay for the food, dancing, and chaos (the good kind)
             </p>
           </motion.div>
         </div>
-
-        {/* Tagline below band */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="font-serif italic text-xl md:text-2xl text-white/90 text-center max-w-xl px-4 mt-12"
-        >
-          Come for the vows. Stay for the food, dancing, and chaos (the good kind)
-        </motion.p>
       </section>
 
-      {/* Welcome / About */}
-      <section className="max-w-6xl mx-auto px-4 py-24 md:py-32">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          {/* Left: Portrait photo placeholder */}
-          <div className="aspect-[2/3] bg-gradient-to-b from-stone-200 to-stone-400 rounded-none border border-taupe flex items-end justify-center pb-6">
-            <span className="font-sans text-xs tracking-widest uppercase text-charcoal/40">Your photo here</span>
-          </div>
-
-          {/* Right: Text */}
-          <div>
-            <p className="eyebrow mb-4">Welcome</p>
-            <h2 className="font-serif text-3xl md:text-4xl text-charcoal mb-6 leading-snug">
-              We're so excited to share this moment with you.
-            </h2>
-            <p className="font-sans text-charcoal/70 leading-relaxed mb-4">
-              Thank you for being part of our story — it wouldn't be the same without the people we love most.
+      {/* ── Welcome ──────────────────────────── */}
+      <section className="welcome-section">
+        <div className="welcome-grid">
+          {/* Left: text */}
+          <motion.div
+            className="welcome-text"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <p className="eyebrow mb-3">Welcome</p>
+            <h2>Welcome,</h2>
+            <p>
+              We&apos;re so excited to share this moment with you. Thank you for being part of our
+              story — it wouldn&apos;t be the same without the people we love most.
             </p>
-            <p className="font-sans text-charcoal/70 leading-relaxed mb-10">
-              Join us as we celebrate our marriage on August 17th! This website has everything you'll need: the schedule, venue details, travel tips, and RSVP.
+            <p>
+              Join us as we celebrate our marriage on August 17th! This website has everything
+              you&apos;ll need: the schedule, venue details, travel tips, and RSVP.
             </p>
-
-            {/* Navigation buttons */}
-            <div className="flex flex-wrap gap-3">
+            <div className="welcome-btns">
               {NAV_BUTTONS.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  className="border border-charcoal text-charcoal hover:bg-charcoal hover:text-cream font-sans text-xs tracking-widest uppercase px-5 py-2.5 rounded-none transition-colors"
-                >
+                <Link key={to} to={to} className="welcome-btn">
                   {label}
                 </Link>
               ))}
             </div>
-          </div>
+          </motion.div>
+
+          {/* Right: photo */}
+          <motion.div
+            className="welcome-photo-col"
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <CouplePhoto />
+          </motion.div>
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="h-px bg-taupe max-w-6xl mx-auto" />
-
-      {/* Gallery */}
-      <section className="bg-sand py-24">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* ── Gallery ──────────────────────────── */}
+      <section className="gallery-section">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <p className="eyebrow text-center mb-3">Gallery</p>
-          <h2 className="font-serif text-3xl md:text-4xl text-charcoal text-center mb-12">
-            Moments we'll always remember
-          </h2>
-          <ImageGallery />
-        </div>
-      </section>
+          <h2 className="gallery-section-title">A Few of Our Favourites</h2>
+        </motion.div>
 
-      {/* Divider */}
-      <div className="h-px bg-taupe" />
-
-      {/* Navigation section */}
-      <section className="py-24">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="eyebrow mb-3">Explore</p>
-          <h2 className="font-serif text-2xl md:text-3xl text-charcoal mb-10">Everything you need to know</h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {NAV_BUTTONS.map(({ to, label }) => (
-              <Link
-                key={to}
-                to={to}
-                className="border border-charcoal text-charcoal hover:bg-charcoal hover:text-cream font-sans text-xs tracking-widest uppercase px-5 py-2.5 rounded-none transition-colors"
-              >
-                {label}
-              </Link>
+        <div className="gallery-track-wrapper">
+          <div className="gallery-track">
+            {galleryItems.map((n, i) => (
+              <div key={i} className="gallery-item">
+                <img
+                  src={`${BASE}/photos/gallery-${n}.jpg`}
+                  alt={`Gallery photo ${n}`}
+                  loading="lazy"
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -125,3 +139,5 @@ export default function Home() {
     </div>
   )
 }
+
+
