@@ -17,13 +17,8 @@
   --color-overlay: rgba(44, 36, 22, 0.38);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--color-cream);
@@ -32,6 +27,7 @@ body {
   letter-spacing: 0.02em;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Fallback for images before they load */
@@ -400,6 +396,7 @@ img {
   object-fit: cover;
   display: block;
 }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
 
 /* ─── Page hero (inner pages) ──────────────── */
 .page-hero {

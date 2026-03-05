@@ -41,6 +41,7 @@ export default function Header() {
               className={({ isActive }) =>
                 `navbar-link${isActive ? ' active' : ''}`
               }
+              style={{ color: 'var(--charcoal)' }}
             >
               {label}
             </NavLink>
@@ -59,6 +60,7 @@ export default function Header() {
         <button
           className={`md:hidden p-2 transition-colors ${scrolled ? 'text-charcoal' : 'text-white'}`}
           aria-label="Toggle menu"
+          style={{ color: 'var(--charcoal)' }}
           onClick={() => setMenuOpen(o => !o)}
         >
           {menuOpen ? '✕' : '☰'}
@@ -76,6 +78,7 @@ export default function Header() {
               className={({ isActive }) =>
                 `font-sans text-xs tracking-widest uppercase py-1 transition-colors ${isActive ? 'text-brown' : 'text-charcoal'}`
               }
+              style={{ color: 'var(--charcoal)' }}
             >
               {label}
             </NavLink>
@@ -83,7 +86,8 @@ export default function Header() {
           {isAuthenticated && (
             <button
               onClick={() => { logout(); setMenuOpen(false) }}
-              className="font-sans text-xs tracking-widest uppercase text-charcoal text-left py-1"
+              className="text-xs font-medium uppercase tracking-widest text-left py-1"
+              style={{ color: 'var(--charcoal)' }}
             >
               Log out
             </button>
