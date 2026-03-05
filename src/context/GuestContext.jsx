@@ -1,40 +1,23 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 const GuestContext = createContext(null)
 
 export function GuestProvider({ children }) {
-  const [currentFamily, setCurrentFamilyState] = useState(null)
+  const [currentFamily] = useState({
+    familyName: 'Our Guests',
+    guests: [
+      { name: 'Guest', events: ['mehndi', 'pithi', 'sangeet', 'wedding'] },
+    ],
+    rsvps: [],
+  })
 
-  useEffect(() => {
-    const stored = localStorage.getItem('rz_family')
-    if (stored) {
-      try {
-        setCurrentFamilyState(JSON.parse(stored))
-      } catch {
-        localStorage.removeItem('rz_family')
-      }
-    }
-  }, [])
-
-  function setCurrentFamily(family) {
-    setCurrentFamilyState(family)
-    if (family) {
-      localStorage.setItem('rz_family', JSON.stringify(family))
-    } else {
-      localStorage.removeItem('rz_family')
-    }
-  }
-
-  function logout() {
-    setCurrentFamily(null)
-  }
-
+  // Login gate is disabled — all visitors can see the full site
   return (
     <GuestContext.Provider value={{
       currentFamily,
-      setCurrentFamily,
-      isAuthenticated: !!currentFamily,
-      logout,
+      setCurrentFamily: () => {},
+      isAuthenticated: true,
+      logout: () => {},
     }}>
       {children}
     </GuestContext.Provider>
