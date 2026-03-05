@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
 import OurStory from './pages/OurStory.jsx'
 import Schedule from './pages/Schedule.jsx'
+import Gallery from './pages/Gallery.jsx'
 import Travel from './pages/Travel.jsx'
 import FAQ from './pages/FAQ.jsx'
 import RSVP from './pages/RSVP.jsx'
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/our-story" element={<OurStory />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/travel" element={<Travel />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/rsvp" element={<RSVP />} />
