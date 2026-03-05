@@ -1,25 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useGuest } from '../context/GuestContext.jsx'
 
 const NAV_LINKS = [
-  { to: '/', label: 'Home' },
   { to: '/our-story', label: 'Our Story' },
   { to: '/schedule', label: 'Schedule' },
   { to: '/travel', label: 'Travel' },
-  { to: '/faq', label: 'FAQ' },
-  { to: '/rsvp', label: 'RSVP' }
+  { to: '/rsvp', label: 'RSVP' },
+  { to: '/faq', label: 'FAQs' },
 ]
 
 export default function Header() {
   const { isAuthenticated, logout } = useGuest()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 60)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const solidClass = scrolled ? 'navbar--solid' : 'navbar--transparent'
 
   return (
-    <header style={{ backgroundColor: 'rgba(247,243,238,0.96)', backdropFilter: 'blur(8px)', borderBottom: '1px solid var(--taupe)' }} className="sticky top-0 z-40">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="font-display text-xl tracking-elegant" style={{ color: 'var(--charcoal)' }}>
-          Ricky &amp; Zeel
+    <header className={`navbar ${solidClass}`}>
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link to="/" className="navbar-brand">
+          R &amp; Z
         </Link>
 
         {/* Desktop nav */}
@@ -29,7 +39,7 @@ export default function Header() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                `nav-link text-xs font-medium uppercase tracking-widest transition-colors ${isActive ? 'active' : ''}`
+                `navbar-link${isActive ? ' active' : ''}`
               }
               style={{ color: 'var(--charcoal)' }}
             >
@@ -39,8 +49,7 @@ export default function Header() {
           {isAuthenticated && (
             <button
               onClick={logout}
-              className="nav-link text-xs font-medium uppercase tracking-widest transition-colors"
-              style={{ color: 'var(--charcoal)' }}
+              className="navbar-link"
             >
               Log out
             </button>
@@ -49,7 +58,7 @@ export default function Header() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2"
+          className={`md:hidden p-2 transition-colors ${scrolled ? 'text-charcoal' : 'text-white'}`}
           aria-label="Toggle menu"
           style={{ color: 'var(--charcoal)' }}
           onClick={() => setMenuOpen(o => !o)}
@@ -60,18 +69,14 @@ export default function Header() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav
-          className="md:hidden border-t px-6 py-4 flex flex-col gap-4"
-          style={{ backgroundColor: 'var(--cream)', borderColor: 'var(--taupe)' }}
-          aria-label="Mobile navigation"
-        >
+        <nav className="md:hidden bg-cream border-t border-beige px-4 py-4 flex flex-col gap-4" aria-label="Mobile navigation">
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `text-xs font-medium uppercase tracking-widest py-1 transition-colors ${isActive ? 'active' : ''}`
+                `font-sans text-xs tracking-widest uppercase py-1 transition-colors ${isActive ? 'text-brown' : 'text-charcoal'}`
               }
               style={{ color: 'var(--charcoal)' }}
             >
@@ -92,3 +97,4 @@ export default function Header() {
     </header>
   )
 }
+

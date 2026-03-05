@@ -37,65 +37,106 @@ export default function RSVP() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-16">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h1 className="font-serif text-4xl md:text-5xl text-charcoal mb-2 text-center">RSVP</h1>
-        <p className="font-sans text-center text-charcoal/60 text-sm mb-10">
-          {currentFamily.familyName}
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-          {visibleEvents.map(event => (
-            <div key={event.key} className="bg-white rounded-2xl border border-taupe/50 p-6">
-              <h2 className="font-serif text-2xl text-charcoal mb-1">{event.name}</h2>
-              <p className="font-sans text-sm text-charcoal/60 mb-4">{event.date} · {event.time}</p>
-              <div className="flex flex-col gap-4">
-                {currentFamily.guests.map(guest => {
-                  if (!guest.events.includes(event.key)) return null
-                  const key = `${guest.name}__${event.key}`
-                  return (
-                    <div key={key} className="flex items-center justify-between gap-4">
-                      <span className="font-sans text-sm font-medium text-charcoal">{guest.name}</span>
-                      <div className="flex gap-4">
-                        {['yes', 'no'].map(v => (
-                          <label key={v} className="flex items-center gap-1.5 font-sans text-sm cursor-pointer">
-                            <input
-                              type="radio"
-                              name={key}
-                              value={v}
-                              checked={responses[key] === v}
-                              onChange={() => handleChange(guest.name, event.key, v)}
-                              className="accent-accent"
-                            />
-                            {v === 'yes' ? 'Attending' : 'Not Attending'}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
+    <div>
+      <div className="page-hero">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="eyebrow mb-3">Kindly reply by July 1st, 2025</p>
+          <h1>RSVP</h1>
+          <p>Please confirm your attendance for each event below</p>
+        </motion.div>
+      </div>
 
-          {status && (
-            <p role="status" className="font-sans text-sm text-center text-green-700 font-medium">
-              {status}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-accent text-white font-sans font-semibold py-3 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50"
+      <div className="rsvp-page">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+        >
+          <p
+            className="font-sans text-center text-xs tracking-widest uppercase mb-10"
+            style={{ color: 'var(--color-text-light)' }}
           >
-            {loading ? 'Submitting…' : 'Submit RSVP'}
-          </button>
-        </form>
-      </motion.div>
+            {currentFamily.familyName}
+          </p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            {visibleEvents.map(event => (
+              <div
+                key={event.key}
+                style={{
+                  background: 'var(--color-warm-white)',
+                  border: '1px solid var(--color-beige)',
+                  borderRadius: 4,
+                  padding: '1.75rem 2rem',
+                }}
+              >
+                <h2 className="font-serif mb-1" style={{ fontSize: '1.5rem', fontWeight: 400, color: 'var(--color-text)' }}>
+                  {event.name}
+                </h2>
+                <p className="font-sans mb-5" style={{ fontSize: '0.8rem', color: 'var(--color-text-light)' }}>
+                  {event.date} · {event.time}
+                </p>
+                <div className="flex flex-col gap-4">
+                  {currentFamily.guests.map(guest => {
+                    if (!guest.events.includes(event.key)) return null
+                    const key = `${guest.name}__${event.key}`
+                    return (
+                      <div key={key} className="flex items-center justify-between gap-4 flex-wrap">
+                        <span className="font-sans font-medium" style={{ fontSize: '0.875rem', color: 'var(--color-text)' }}>
+                          {guest.name}
+                        </span>
+                        <div className="flex gap-5">
+                          {['yes', 'no'].map(v => (
+                            <label
+                              key={v}
+                              className="flex items-center gap-2 font-sans cursor-pointer"
+                              style={{ fontSize: '0.8rem', color: 'var(--color-text-light)' }}
+                            >
+                              <input
+                                type="radio"
+                                name={key}
+                                value={v}
+                                checked={responses[key] === v}
+                                onChange={() => handleChange(guest.name, event.key, v)}
+                                style={{ accentColor: 'var(--color-brown)' }}
+                              />
+                              {v === 'yes' ? 'Attending' : 'Not Attending'}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+
+            {status && (
+              <p
+                role="status"
+                className="font-sans text-sm text-center font-medium"
+                style={{ color: 'var(--color-brown)' }}
+              >
+                {status}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary"
+              style={{ textAlign: 'center', opacity: loading ? 0.6 : 1 }}
+            >
+              {loading ? 'Submitting…' : 'Submit RSVP'}
+            </button>
+          </form>
+        </motion.div>
+      </div>
     </div>
   )
 }
+
