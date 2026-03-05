@@ -4,57 +4,52 @@ import { motion, AnimatePresence } from 'framer-motion'
 const FAQS = [
   {
     id: 'attire',
-    q: 'What should I wear to each event?',
-    a: 'Each event has its own dress code. For the Mehndi, colourful Indian attire is encouraged. For the Pithi & Grah Shanti, traditional Indian attire. For the Sangeet, festive Indian attire. For the Wedding, formal Indian attire.',
+    q: 'What should I wear? (Dress code)',
+    a: 'More info coming soon! Each event has its own dress code. Please check back for details on what to wear to each celebration.',
   },
   {
-    id: 'parking',
-    q: 'Is there parking available?',
-    a: 'Parking information for each venue will be posted closer to the date. Please check back here or contact us directly.',
-  },
-  {
-    id: 'plusone',
-    q: 'Can I bring a plus-one?',
-    a: 'Due to venue capacity, we can only accommodate guests listed on your invitation. If you have any questions, please reach out to us directly.',
-  },
-  {
-    id: 'arrival',
-    q: 'What time should I arrive?',
-    a: 'Please plan to arrive 15–20 minutes before the listed start time so we can begin on schedule.',
+    id: 'children',
+    q: 'Are kids welcome?',
+    a: 'More info coming soon! We\'ll have details about children at our celebrations shortly.',
   },
   {
     id: 'dietary',
     q: 'Will there be vegetarian / dietary options?',
-    a: 'Yes! We will have vegetarian options at all events. If you have specific dietary requirements or severe allergies, please let us know when you RSVP.',
+    a: 'More info coming soon! We\'ll share details about our menu and dietary accommodations.',
   },
   {
-    id: 'children',
-    q: 'Are children welcome?',
-    a: 'Children are welcome at our celebrations. Please include them in your RSVP so we can plan accordingly.',
+    id: 'parking',
+    q: 'Is there parking at the venues?',
+    a: 'More info coming soon! Parking information for each venue will be posted closer to the date.',
   },
   {
     id: 'photos',
     q: 'Can I take photos during the ceremony?',
-    a: 'We will have a professional photographer capturing the day. Details about our photo policy during the ceremony will be shared closer to the date.',
+    a: 'More info coming soon! We\'ll share our photo policy and details about our professional photographer.',
   },
   {
     id: 'rsvp',
-    q: 'What is the RSVP deadline?',
-    a: 'RSVP details and deadline will be communicated directly. Please use the RSVP page on this website to confirm your attendance.',
+    q: 'How do I RSVP?',
+    a: 'More info coming soon! Please use the RSVP page on this website to confirm your attendance.',
+  },
+  {
+    id: 'timeline',
+    q: 'What is the timeline for the weekend?',
+    a: 'More info coming soon! The full weekend schedule will be posted here as details are finalised.',
   },
 ]
 
 function FAQItem({ item }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-taupe">
+    <div className="faq-item">
       <button
-        className="w-full text-left px-0 py-5 font-sans text-charcoal flex justify-between items-center hover:text-accent transition-colors"
+        className="faq-question"
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
       >
-        <span className="text-sm tracking-wide pr-4">{item.q}</span>
-        <span className="font-serif text-xl text-accent flex-none">{open ? '−' : '+'}</span>
+        <span>{item.q}</span>
+        <span className="faq-icon">{open ? '−' : '+'}</span>
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -66,9 +61,7 @@ function FAQItem({ item }) {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="pb-5 font-sans text-charcoal/60 text-sm leading-relaxed">
-              {item.a}
-            </p>
+            <div className="faq-answer-inner">{item.a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -78,22 +71,32 @@ function FAQItem({ item }) {
 
 export default function FAQ() {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-24">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="text-center mb-16">
+    <div>
+      <div className="page-hero">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <p className="eyebrow mb-3">Need to Know</p>
-          <h1 className="font-serif text-5xl md:text-6xl text-charcoal">Frequently Asked Questions</h1>
-        </div>
-        <div className="border-t border-taupe">
-          {FAQS.map((item) => (
+          <h1>Frequently Asked Questions</h1>
+          <p>We&apos;ll keep this updated as details are confirmed</p>
+        </motion.div>
+      </div>
+
+      <div className="faq-page">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          style={{ borderTop: '1px solid var(--color-beige)' }}
+        >
+          {FAQS.map(item => (
             <FAQItem key={item.id} item={item} />
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }
+

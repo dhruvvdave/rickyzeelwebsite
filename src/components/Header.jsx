@@ -1,35 +1,45 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useGuest } from '../context/GuestContext.jsx'
 
 const NAV_LINKS = [
-  { to: '/', label: 'Home' },
   { to: '/our-story', label: 'Our Story' },
   { to: '/schedule', label: 'Schedule' },
   { to: '/travel', label: 'Travel' },
-  { to: '/faq', label: 'FAQ' },
   { to: '/rsvp', label: 'RSVP' },
+  { to: '/faq', label: 'FAQs' },
 ]
 
 export default function Header() {
   const { isAuthenticated, logout } = useGuest()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 60)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const solidClass = scrolled ? 'navbar--solid' : 'navbar--transparent'
 
   return (
-    <header className="sticky top-0 z-40 bg-cream/95 backdrop-blur border-b border-taupe/60">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="font-serif text-lg tracking-widest text-charcoal hover:text-accent transition-colors">
-          Ricky & Zeel
+    <header className={`navbar ${solidClass}`}>
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link to="/" className="navbar-brand">
+          R &amp; Z
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7" aria-label="Main navigation">
+        <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               className={({ isActive }) =>
-                `font-sans text-xs tracking-widest uppercase transition-colors ${isActive ? 'text-accent' : 'text-charcoal hover:text-accent'}`
+                `navbar-link${isActive ? ' active' : ''}`
               }
             >
               {label}
@@ -38,7 +48,7 @@ export default function Header() {
           {isAuthenticated && (
             <button
               onClick={logout}
-              className="font-sans text-xs tracking-widest uppercase text-charcoal hover:text-accent transition-colors"
+              className="navbar-link"
             >
               Log out
             </button>
@@ -47,7 +57,7 @@ export default function Header() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden text-charcoal p-2"
+          className={`md:hidden p-2 transition-colors ${scrolled ? 'text-charcoal' : 'text-white'}`}
           aria-label="Toggle menu"
           onClick={() => setMenuOpen(o => !o)}
         >
@@ -57,14 +67,14 @@ export default function Header() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav className="md:hidden bg-cream border-t border-taupe/60 px-4 py-4 flex flex-col gap-4" aria-label="Mobile navigation">
+        <nav className="md:hidden bg-cream border-t border-beige px-4 py-4 flex flex-col gap-4" aria-label="Mobile navigation">
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `font-sans text-xs tracking-widest uppercase py-1 transition-colors ${isActive ? 'text-accent' : 'text-charcoal'}`
+                `font-sans text-xs tracking-widest uppercase py-1 transition-colors ${isActive ? 'text-brown' : 'text-charcoal'}`
               }
             >
               {label}
@@ -83,3 +93,4 @@ export default function Header() {
     </header>
   )
 }
+
